@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>00s Music</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
+        }
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="DC Comics Logo">
+    <h1>00s Music</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: "What was Britney Spears 'born to make you' on her first UK number one hit of the 2000s?", answer: "Happy" },
+        { question: "Pendulum’s ‘Propane Nightmares’ was a top ten single from their 2008 album. What was this album called?", answer: "In Silico" },
+        { question: "‘Day ‘n’ Nite’ is a song released in 2009 by which U.S rapper?", answer: "Kid Cudi" },
+        { question: "Who’s mum did Fountains of Wayne sing about in their 2004 hit?", answer: "Stacy’s" },
+        { question: "What was the name of Avril Lavigne’s debut single?", answer: "Complicated" },
+        { question: "Cascada hit number one on the UK singles chart in 2006 with ‘Everytime We Touch’. True or false?", answer: "False – it reached number 2!" },
+        { question: "Which album released in the year 2000 became the best-selling rock album of the 21st century?", answer: "Hybrid Theory by Linkin Park" },
+        { question: "Which popstar released the songs ‘Come On Over Baby (All I Want Is You)’, ‘Can’t Hold Us Down’, and ‘Ain’t No Other Man’ in the 2000s?", answer: "Christina Aguilera" },
+        { question: "Who did Eminem ask to 'please stand up' in his worldwide hit in the year 2000?", answer: "The Real Slim Shady" },
+        { question: "In what year was Spotify launched?", answer: "2008" },
+        { question: "What movie franchise used the Muse song 'Supermassive Black Hole' to soundtrack an iconic baseball scene from its 2008 film?", answer: "Twilight" },
+        { question: "Which indie-rock song released in 2004 by a Las Vegas-based band has now spent over 350 weeks on the UK singles chart?", answer: "Mr. Brightside by The Killers" },
+        { question: "What did My Chemical Romance welcome us to in their number one single of 2006?", answer: "The Black Parade" },
+        { question: "Which virtual band released the song 'DARE' in 2005?", answer: "Gorillaz" },
+        { question: "Sarah Harding, Nadine Coyle and Kimberley Walsh were all members of which chart-dominating 2000’s girl group?", answer: "Girls Aloud" },
+        { question: "Who ironically opened up their Glastonbury headlining performance in 2008 with a cover of Oasis’s 'Wonderwall', after Noel Gallagher criticised their appearance at the festival?", answer: "Jay-Z" },
+        { question: "Who is widely credited with releasing the first surprise drop album, with their 2008 release 'In Rainbows'?", answer: "Radiohead" },
+        { question: "The song 'Fix Up Look Sharp' was released by which UK Grime artist in 2003?", answer: "Dizzee Rascal" },
+        { question: "It took Beyonce a month and a half to perfect the iconic dance routine seen in the music video for which of her 2000’s singles?", answer: "Single Ladies (Put A Ring On It)" },
+        { question: "How many albums did hip hop trio N-Dubz release in the 2000’s?", answer: "Two (Uncle B & Against All Odds)" },
+        { question: "Which U.S state does Flo Rida originate from?", answer: "Florida" },
+        { question: "Who is the lead singer of the glam rock band The Darkness?", answer: "Justin Hawkins" },
+        { question: "Which iconic girlband released their third and final studio album ‘Forever’ in the year 2000?", answer: "Spice Girls" },
+        { question: "‘Even though the Gods are crazy, even though the stars are blind’ is a lyric from which socialite’s 2006 debut single?", answer: "Paris Hilton (Stars Are Blind)" },
+        { question: "‘California’ by Phantom Planet soundtracked which popular 2000’s teen show?", answer: "The O.C" },
+        { question: "Who featured on the hit single ‘Starstrukk’ by 3OH!3 in 2009?", answer: "Katy Perry" },
+        { question: "What was the name of the fictional girlband Chantelle Houghton had to pretend to be in in 2006’s Celebrity Big Brother?", answer: "Kandy Floss" },
+        { question: "Who did Cobra Starship feature on their 2009 single 'Good Girls Go Bad'?", answer: "Leighton Meester" },
+        { question: "Which Evanescence song spent four weeks at number one on the UK singles chart in the summer of 2003?", answer: "Bring Me To Life" },
+        { question: "What brand of watch did Wiley rap about on his 2008 hit single?", answer: "Rolex" },
+        { question: "‘Kids’ was a collaboration between Kylie Minogue and which UK artist in the year 2000?", answer: "Robbie Williams" },
+        { question: "Who teamed up with Tony Christie for the 2005 charity single ‘(Is This The Way To) Amarillo’?", answer: "Peter Kay" },
+        { question: "Four X-Factor contestants had consecutive Christmas number one hits in the 2000’s. Can you name one of these singers?", answer: "Shayne Ward, Leona Lewis, Leon Jackson, or Alexandra Burke" },
+        { question: "After these four X-Factor Christmas number ones, who did the British public back a campaign against to take the festive top spot in 2009?", answer: "Rage Against The Machine (with Killing In The Name Of)" },
+        { question: "‘Only By The Night’ was a hugely successful album in the UK for which rock band in 2008?", answer: "Kings Of Leon" },
+        { question: "Who produced Lady Gaga’s debut single ‘Just Dance’?", answer: "Red One" },
+        { question: "How many times does Shaggy or Ricardo Ducent say the iconic line 'it wasn’t me' in Shaggy’s song of the same title?", answer: "15" },
+        { question: "The Fratellis, Razorlight, Kaiser Chiefs and The Kooks all belong to which genre which boomed in popularity in the 2000’s?", answer: "Indie Rock" },
+        { question: "‘Elephunk’, ‘Monkey Business’ and ‘The E.N.D’ are all albums released in the 2000’s by which multi-genre band?", answer: "Black Eyed Peas" },
+        { question: "Which song by Swedish DJ Basshunter spent five weeks at number one on the UK charts in 2008?", answer: "Now You’re Gone" },
+        { question: "‘Get Rich or Die Tryin’ is the 2003 debut album by which rapper?", answer: "50 Cent" },
+        { question: "Who won five Grammys in 2008, including Record and Song of the Year for their single ‘Rehab’?", answer: "Amy Winehouse" },
+        { question: "According to the lyrics of ‘7 Days’, what did Craig David do on Sunday?", answer: "Chilled" },
+        { question: "How many top ten singles did Green Day have in the UK from their 2004 album ‘American Idiot’?", answer: "Three: American Idiot (03), Boulevard Of Broken Dreams (05) and Wake Me Up When September Ends (08)" },
+        { question: "Arctic Monkeys put on 153 shows throughout 2005 and 2006 whilst touring their most recent album. Which album was this tour for?", answer: "Whatever People Say I Am, That’s What I’m Not" },
+        { question: "Who released the album 'FutureSex/LoveSounds', co-produced by Timbaland, in 2006?", answer: "Justin Timberlake" },
+        { question: "Which was hip hop duo Outkast’s higher charting 2000’s single; ‘Miss Jackson’, or ‘Hey Ya’?", answer: "Miss Jackson" },
+        { question: "Glee’s cover of 'Don’t Stop Believin’ was hugely successful in 2009. Who originally wrote and released the song?", answer: "Journey" },
+        { question: "Which city is the Jay-Z and Alicia Keys collaboration ‘Empire State Of Mind’ about?", answer: "New York City" },
+        { question: "Which five artists collaborated on 2001’s ‘Lady Marmalade’?", answer: "Christina Aguilera, Mya, Lil’ Kim, Pink, and Missy Elliot" }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    // Shuffle the quiz data
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+</script>
+
+</body>
+</html>
